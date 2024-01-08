@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie app with jQuery!</title>
+</head>
+<body>
+    <h1>Rate a Movie!</h1>
+    <button id="alpha-sort">Sort Alphabetically</button>
+    <form id="movieform">
+        <label for="movie-title">Movie title:</label>
+        <input type="text" id="movie-title" placeholder="Movie title"/>
+        <label for="rating">Rate from 0-10:</label>
+        <input type="range" id="rating" min="0" max="10"/>
+        <input type="submit" id="submit-btn">
+    </form>
+    <ul id="rated">
+    </ul>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script>
+        $(function() {
+            $('#submit-btn').click( function(e) {
+                e.preventDefault();
+            }); 
+            
+            $('#movieform #submit-btn').on('click', function(){
+                if($('#movie-title').val().length < 2){
+                    alert('Movie title too short')
+                    
+                } else {
+                    
+                    let title = $('#movie-title').val();
+                    let rating = $('#rating').val();
+
+                    $('#rated').append(`<li><b>Movie Name:</b> ${title}, <b>Rating:</b> ${rating}<button type="button">Delete</button></li>`);
+            
+                    $('#rated').on('click', 'li button', function(e){
+                        $(e.target).closest('li').remove()
+                    })
+                }
+            });
+            function sortAlpha(sel){
+                $(sel).children('li').sort(function(a,b){
+                    let A = $(a).text().toUpperCase();
+                    let B = $(b).text().toUpperCase();
+                    return (A < B) ? -1 : (A > B) ? 1 : 0;}).appendTo(sel);
+            }
+            $('#alpha-sort').on('click', function(){
+                sortAlpha("ul");
+            })
+        })
+    </script>
+</body>
+</html>
